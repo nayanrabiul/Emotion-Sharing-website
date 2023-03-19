@@ -1,23 +1,17 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App'
 import './index.css'
-import { BrowserRouter } from 'react-router-dom';
-import { Router } from '../routes/router';
+import {router} from '../routes/Routes.tsx';
+import {RouterProvider} from 'react-router-dom';
+import AuthProvider from "../contexts/AuthProvider.jsx";
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-    <Router>
-        <React.StrictMode>
-            <App/>
-        </React.StrictMode>
-    </Router>
+    <React.StrictMode>
+        <AuthProvider>
+            <RouterProvider router={router}/>
+        </AuthProvider>
+    </React.StrictMode>,
 )
 
 
 
-ReactDOM.hydrateRoot(
-    document.getElementById("app") as HTMLElement,
-    <BrowserRouter>
-        <Router />
-    </BrowserRouter>
-);

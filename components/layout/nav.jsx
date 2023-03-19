@@ -5,6 +5,7 @@ import React, {useCallback, useContext, useEffect, useState} from "react";
 
 
 import {motion} from "framer-motion"
+import {Link} from "react-router-dom";
 
 const variants = {
     open: {opacity: 1, x: 0},
@@ -70,31 +71,15 @@ const Nav = () => {
             <nav className="container p-0 flex justify-between items-center">
                 {/* for desktop */}
                 <div className="w-full py-1 flex justify-between items-center">
-                    <Link href={'/#Whychooseus'}>
-                        <Image
-                            src={'/nav/logo.png'}
-                            alt="logo"
-                            className="w-16 h-12 md:w-28 md:h-20 object-contain"
-                            width={512}
-                            height={512}
-                        />
-                    </Link>
-
-                    <div className="hidden md:block">
-                        <ul className="flex flex-row justify-end items-center space-x-3">
-                            {data.map((item, index) => (
-                                <li key={index}>
-                                    <Link href={item.hash_link}>{item.title}</Link>
-
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
+                    <Link to={`/`}>root</Link>
+                    <Link to={`/post`}>post</Link>
+                    <Link to={`/login`}>login</Link>
+                    <Link to={`/user/1`}>user</Link>
                 </div>
 
                 {/* this is for  toggle  hamburger icon and close*/}
                 <div className="md:hidden flex justify-end items-center py-3">
-                    <Image
+                    <img
                         src={toggle ? "/nav/close.svg" : "/nav/menu.svg"}
                         alt="menu"
                         className="w-7 h-7"
@@ -113,7 +98,7 @@ const Nav = () => {
                     >
                         <div className="flex flex-col justify-center items-center p-4 py-16">
                             <div className="border rounded-full border-white p-4">
-                                <Image
+                                <img
                                     src={"/nav/close.svg"}
                                     alt="menu"
                                     className="object-contain"
@@ -124,20 +109,10 @@ const Nav = () => {
                             </div>
                             <motion.ul variants={variants_mobile_nav_ul}
                                        className=" flex flex-col justify-center items-center space-x-3 text-3xl text-second mt-8 space-y-8">
-                                {data.map((item, index) => (
-
-                                    <motion.li
-                                        variants={variants_mobile_nav_li}
-                                        whileHover={{scale: 1.1}}
-                                        whileTap={{scale: 0.95}}
-                                        key={index}
-                                    >
-                                        <Link href={item.hash_link}
-                                              onClick={() => setToggle(false)}> {item.title}</Link>
-                                    </motion.li>
-
-
-                                ))}
+                                <Link to={`/`}>root</Link>
+                                <Link to={`/post`}>post</Link>
+                                <Link to={`/login`}>login</Link>
+                                <Link to={`/user/1`}>user</Link>
                             </motion.ul>
 
                         </div>
