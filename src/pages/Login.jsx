@@ -1,19 +1,20 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import {useNavigate} from 'react-router-dom';
-
-
+import {AuthContext} from "../../contexts/AuthProvider.jsx";
 
 const Login = () => {
     const [userId, setUserId] = useState("");
+    const {user,setUser} = useContext(AuthContext);
     const navigate = useNavigate();
     const handleInputChange = (e) => {
         setUserId(e.target.value);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async  (e) => {
         e.preventDefault();
-        localStorage.setItem("user", userId);
-        navigate('/user/1');
+        await  localStorage.setItem("user", userId);
+        setUser(userId);
+        navigate(`/user/${userId}`);
     };
 
     return (<div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
