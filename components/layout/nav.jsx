@@ -42,30 +42,10 @@ const variants_mobile_nav_li = {
 const Nav = () => {
 
     const [toggle, setToggle] = useState(false);
-    const [nav_color_change, setnav_color_change] = useState(false);
-
-    const onScroll = (event) => {
-        const {scrollY} = window;
-
-        scrollY > 120 ? setnav_color_change(true) : setnav_color_change(false);
-    };
-
-    useEffect(() => {
-        //add eventlistener to window
-        window.addEventListener("scroll", onScroll, {passive: true});
-        // remove event on unmount to prevent a memory leak with the cleanup
-        return () => {
-            window.removeEventListener("scroll", onScroll, {passive: true});
-        };
-    }, []);
-
-
 
     return (
         <div
-            className={`fixed z-50 w-full bg-[#000000] ${
-                nav_color_change ? "bg-opacity-80" : "bg-opacity-20"
-            } text-second `}
+            className={`fixed z-50 w-full bg-red-400  `}
         >
 
             <nav className="container p-0 flex justify-between items-center">
