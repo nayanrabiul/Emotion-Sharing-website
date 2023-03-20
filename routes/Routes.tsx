@@ -5,7 +5,8 @@ import Login from "../src/pages/Login";
 import Layout from "../components/layout/Layout";
 
 import {createBrowserRouter} from "react-router-dom";
-import PrivateRoute from "./PrivateRoutes";
+import PrivateRoute from "./route_helper/PrivateRoutes";
+import UserCheck from "./route_helper/UserCheck";
 
 export const router = createBrowserRouter([
     {
@@ -13,17 +14,16 @@ export const router = createBrowserRouter([
         element: <Layout></Layout>,
         children: [
             {path: '/', element: <App></App>},
-            {path: '/post', element: <Post></Post>}
-        ]
+            {path: '/post', element: <Post></Post>},]
+    },
+    {
+        path: '/login',
+        element: <UserCheck><Login></Login></UserCheck>
 
     },
     {
         path: '/user/:id',
-        element: <PrivateRoute> <User></User> </PrivateRoute>
-
-    }, {
-        path: '/login',
-        element: <Login></Login>
+        element: <UserCheck><Layout><User></User></Layout> </UserCheck>
 
     },
 
