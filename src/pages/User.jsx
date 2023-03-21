@@ -5,7 +5,7 @@ const User = () => {
     return (
         <div>
             <div className={'text-2xl flex flex-col'}>
-user
+userfasd
             </div>
         </div>
     );

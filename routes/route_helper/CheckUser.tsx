@@ -2,12 +2,12 @@ import {useContext} from 'react';
 import {Navigate, useParams} from 'react-router-dom';
 import {AuthContext} from '../../contexts/AuthProvider';
 
-const UserCheck = ({children}) => {
+const CheckUser = ({children}) => {
     const {user} = useContext(AuthContext);
+    console.log("fasdfasd",user)
 
     if (user) {
-        console.log("here")
-        return <Navigate to={`/user/${user}`}></Navigate>;
+        return children;
     }
     else{
         return <Navigate to="/login"></Navigate>;
@@ -16,4 +16,4 @@ const UserCheck = ({children}) => {
 
 };
 
-export default UserCheck;
+export default CheckUser;
