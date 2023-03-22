@@ -7,7 +7,7 @@ const CheckLogin = ({children}) => {
 
         console.log("here")
     if (user) {
-        return <Navigate to={`/user/${user}`}></Navigate>;
+        return <Navigate to={`/user/${user}`}/>;
     }
     else{
         return children;

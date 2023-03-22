@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from "react";
-import Footer from "./footer.jsx";
-import Nav from "./nav.jsx";
+import Footer from "./Footer.jsx";
+import Nav from "./Nav.jsx";
 import {Col, Row} from "antd";
 
 const Layout = ({children}) => {

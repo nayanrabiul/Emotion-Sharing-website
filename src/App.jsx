@@ -1,17 +1,28 @@
-import React, {useEffect, useState} from "react"
-import {Link} from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import Posts from "../components/home_page/Posts.jsx";
+import TrendingPost from "../components/home_page/TrendingPost.jsx";
+import {Col, Row} from "antd";
+import HeroSection from "../components/home_page/HeroSection.jsx";
+import {router} from "../routes/Routes";
+import {RouterProvider} from "react-router-dom";
+import Layout from "../components/layout/Layout.jsx";
+import SearchBox from "../components/home_page/SearchBox.jsx";
+
 
 const App = () => {
 
-    return (<div>
-        <h1>App</h1>
-        <div className={'text-2xl flex flex-col'}>
-            <Link to={`/`}>root</Link>
-            <Link to={`/post`}>post</Link>
-            <Link to={`/login`}>login</Link>
-            <Link to={`/user/1`}>user</Link>
-        </div>
-    </div>);
-}
+
+    return (
+        <div>
+
+            <HeroSection/>
+            <Row gutter={10}>
+                <Col span={16}><Posts/></Col>
+                <Col span={8}><TrendingPost/></Col>
+            </Row>
+
+
+        </div>);
+};
 
 export default App;

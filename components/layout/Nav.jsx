@@ -3,6 +3,7 @@ import {Link, Navigate} from "react-router-dom";
 import {Col, Row} from "antd";
 import {AuthContext} from "../../contexts/AuthProvider.jsx";
 import Dropdown from "../common/Dropdown.jsx";
+import SearchBox from "../home_page/SearchBox.jsx";
 
 const Nav = () => {
     const {user, setUser} = useContext(AuthContext);
@@ -17,12 +18,12 @@ const Nav = () => {
             <Col span={18}>
                 <div className="w-full py-1 flex justify-center space-x-8 items-center">
 
-                    {/*here goes other menu*/}
+                    <SearchBox/>
 
                 </div>
             </Col>
             <Col span={3}>
-                {user ? <div>
+                {user ? <div className={'flex justify-end'}>
                     <Dropdown user={user} setUser={setUser}/>
                     </div> : <Link to={`/login`}>login</Link>}
             </Col>

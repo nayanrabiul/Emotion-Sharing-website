@@ -9,9 +9,9 @@
      };
 
      return (
-         <div className="relative">
+         <div className="block">
              <button
-                 className="bg-gray-800 text-white font-bold py-2 px-4 rounded"
+                 className="bg-pink-500 text-white font-bold py-2 rounded"
                  onClick={toggleDropdown}
              >
                  Dropdown

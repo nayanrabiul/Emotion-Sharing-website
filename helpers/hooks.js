@@ -3,6 +3,8 @@ import swalAlert from "../components/common/alert";
 
 export const useFetch = (func, query, load = true) => {
     const [data, setData] = useState();
+    const [loading, setLoading] = useState(true);
+    const [headers, setHeaders] = useState();
     const [params, setParams] = useState({
         ...query
     })
@@ -14,14 +16,17 @@ export const useFetch = (func, query, load = true) => {
     }, []);
 
     const getData = (query) => {
+
         setParams({...params, ...query})
-        func({...params, ...query}).then((data) => {
-            setData(data)
+        func({...params, ...query}).then((response) => {
+            setLoading(false)
+            setHeaders(response?.headers)
+            setData(response?.data)
         }).catch(e => {
             console.log(e)
         })
     }
-    return [data, getData];
+    return [data, getData,loading, headers];
 }
 
 export const useAction = async (func, data, reload, alert = true) => {

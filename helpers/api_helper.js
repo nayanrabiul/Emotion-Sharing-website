@@ -14,7 +14,7 @@ axiosApi.interceptors.response.use(response => response, error => Promise.reject
 export async function get(url, data, config = {}) {
     return await axiosApi.
         get(url, {...config, params: data}).
-        then(response => response.data)
+        then(response => response)
 }
 
 export async function post(url, data, config = {}) {
