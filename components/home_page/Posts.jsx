@@ -2,16 +2,15 @@ import React, {useEffect, useState} from "react";
 import {useFetch} from "../../helpers/hooks.js";
 import axios from "axios";
 import Paginate from "./Pagination.jsx";
-import {fetchPosts} from "../../helpers/backend_helper.js";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
-const Posts = () => {
+const Posts = ({url}) => {
     const navigate = useNavigate();
     const [pageNumber, setPageNumber] = useState(1);
     const [pageLimit, setPageLimit] = useState(10);
     const [totalPostCount, setTotalPostCount] = useState(0);
 
-    const [posts, getPosts, headers] = useFetch(fetchPosts, {_page: pageNumber, _limit: pageLimit});
+    const [posts, getPosts, {headers}] = useFetch(url.fetch, {...url.query, _page: pageNumber, _limit: pageLimit});
 
     //set pagination data
     useEffect(() => {
@@ -20,8 +19,10 @@ const Posts = () => {
 
     //fetch total post counts
     useEffect(() => {
-        if (headers)
+        if (url._paginationFromHeader && headers && headers['x-total-count'])
             setTotalPostCount(parseInt(headers['x-total-count'], 10));
+        else
+            setTotalPostCount(posts?.length);
     }, [headers]);
 
 
@@ -31,7 +32,7 @@ const Posts = () => {
                 posts?.map((post, index) => (
                     <li key={post?.id}
                         className="py-4 hover:bg-red-100 hover:cursor-pointer"
-                    onClick={()=>  navigate(`/post/${post?.id}`)}>
+                        onClick={() => navigate(`/post/${post?.id}`)}>
                         <h2 className="text-lg font-semibold">{post?.title}</h2>
                         <p className="text-gray-500">{post?.body}</p>
                     </li>

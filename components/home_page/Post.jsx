@@ -6,7 +6,7 @@ import {fetchPosts} from "../../helpers/backend_helper.js";
 
 const Post = () => {
     const {id} = useParams();
-    const [data, getPost, loading] = useFetch(fetchPosts, {id, _embed: 'comments'})
+    const [data, getPost, {loading}] = useFetch(fetchPosts, {id, _embed: 'comments'})
     const [post, setPost] = useState({});
 
     useEffect(() => {

@@ -26,7 +26,7 @@ export const useFetch = (func, query, load = true) => {
             console.log(e)
         })
     }
-    return [data, getData,loading, headers];
+    return [data, getData, {loading, headers}];
 }
 
 export const useAction = async (func, data, reload, alert = true) => {

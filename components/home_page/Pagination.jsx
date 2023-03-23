@@ -18,8 +18,6 @@ const Paginate = ({setPageLimit, setPageNumber, totalPostCount}) => {
                     defaultCurrent={1}
                     total={totalPostCount}
                     showQuickJumper
-
-
                 />
             </Row>
 

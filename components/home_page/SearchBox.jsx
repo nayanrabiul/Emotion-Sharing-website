@@ -12,7 +12,7 @@ function SearchBox() {
     const [showMenu, setShowMenu] = useState(false);
 
     useEffect(() => {
-        if (searchQuery?.length >= 3) {
+        if (searchQuery?.length >= 1) {
             getPosts({q: searchQuery});
             setShowMenu(true);
             setCurrentPage(1);
@@ -36,14 +36,15 @@ function SearchBox() {
 
     const items = [];
 
-    posts?.slice((currentPage - 1) * pageSize, currentPage * pageSize).map(({id, title, body}) => {
-        items.push({
-            label: (<div className="p-4">
-                <h2 className="text-lg font-bold">{title}</h2>
-                <p>{body}</p>
-            </div>), key: id,
+    posts?.length < 1 ? items.push({label: <div className="p-4">No posts found</div>, key: 'no-posts'}) :
+        posts?.slice((currentPage - 1) * pageSize, currentPage * pageSize).map(({id, title, body}) => {
+            items.push({
+                label: (<div className="p-4">
+                    <h2 className="text-lg font-bold">{title}</h2>
+                    <p>{body}</p>
+                </div>), key: id,
+            })
         })
-    })
 
     items.push({
         label: <Pagination
@@ -58,7 +59,7 @@ function SearchBox() {
     });
 
     const handleIputFocus = (e) => {
-        if (e.target.value.length >= 3) setShowMenu(true); else setShowMenu(false)
+        if (e.target.value.length >= 1) setShowMenu(true); else setShowMenu(false)
         setSearchQuery(e.target.value)
     }
 

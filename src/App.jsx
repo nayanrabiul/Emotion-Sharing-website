@@ -7,6 +7,7 @@ import {router} from "../routes/Routes";
 import {RouterProvider} from "react-router-dom";
 import Layout from "../components/layout/Layout.jsx";
 import SearchBox from "../components/home_page/SearchBox.jsx";
+import {fetchPosts} from "../helpers/backend_helper.js";
 
 
 const App = () => {
@@ -17,7 +18,7 @@ const App = () => {
 
             <HeroSection/>
             <Row gutter={10}>
-                <Col span={16}><Posts/></Col>
+                <Col span={16}><Posts url={{fetch: fetchPosts,_paginationFromHeader:true}}/></Col>
                 <Col span={8}><TrendingPost/></Col>
             </Row>
 
