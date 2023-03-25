@@ -24,7 +24,7 @@ export const FormInput = ({
           name={name}
           autoFocus={true}
           defaultValue={defaultValue}
-          className="border w-full px-3 dark:bg-dark dark:border-main"
+          className="border w-full px-3 dark:bg-dark dark:border-main dark:text-support"
           placeholder={placeholder}
         />
       </Border>

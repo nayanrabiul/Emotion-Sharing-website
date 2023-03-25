@@ -22,6 +22,7 @@ export const router = createBrowserRouter([
         element: <Layout> <Post></Post></Layout>,
     },
     {path: '/user/:id', element: <CheckUser><Layout><User></User></Layout></CheckUser>},
+    {path: 'user-profile/:id', element: <Layout><User></User></Layout>},
     {path: '/login', element: <CheckLogin><Login></Login></CheckLogin>},
     {
         path: "*",

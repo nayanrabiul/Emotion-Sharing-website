@@ -15,7 +15,7 @@ const App = () => {
     window.addEventListener("resize", updateMedia);
     return () => window.removeEventListener("resize", updateMedia);
   });
-  console.log(isTablet);
+
 
   return (
     <div>

@@ -5,10 +5,12 @@ import { fetchPosts } from "../../helpers/backend_helper.js";
 import { FormInput } from "../Form/FormInput.jsx";
 import { BsArrowRight } from "react-icons/bs";
 import { GiCrossedBones } from "react-icons/gi";
-import {SearchBorder} from "../common/Border.jsx"
-
+import { SearchBorder } from "../common/Border.jsx";
+import { useNavigate } from "react-router-dom";
 
 function SearchBox() {
+  const navigate = useNavigate();
+
   const [posts, getPosts] = useFetch(fetchPosts, {}, false); //dont fetch on mount
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -33,7 +35,7 @@ function SearchBox() {
           }}
           className="px-3"
         >
-          <GiCrossedBones/>
+          <GiCrossedBones />
         </button>
       </div>
     ),
@@ -54,7 +56,10 @@ function SearchBox() {
                 <div
                   key={id}
                   className="h-[100px] relative border cursor-pointer bg-white p-2 rounded dark:bg-dark dark:border-main"
-                  onClick={() => navigate(`/post/${id}`)}
+                  onClick={() => {
+                    setShowMenu(false);
+                    navigate(`/post/${id}`);
+                  }}
                 >
                   <h2 className="text-lg text-cyan-800 font-semibold">
                     {title}
@@ -67,10 +72,6 @@ function SearchBox() {
                   </button>
                 </div>
               </SearchBorder>
-              // <div className="p-4">
-              //   <h2 className="text-lg font-bold">{title}</h2>
-              //   <p>{body}</p>
-              // </div>
             ),
             key: id,
           });
@@ -113,6 +114,7 @@ function SearchBox() {
         overlayStyle={{ width: 700 }}
         placement="bottom"
         open={showMenu}
+        className="dark:bg-dark"
       >
         <div></div>
       </Dropdown>

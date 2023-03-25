@@ -5,11 +5,14 @@
 .border {
   @apply border-2 border-black h-full w-full absolute -top-1 -left-1  rounded;
 }
-.center{
-  @apply flex justify-center items-center
+.center {
+  @apply flex justify-center items-center;
 }
 
-#root{
-  @apply dark:bg-dark dark:text-gray-200
+#root {
+  @apply dark:bg-dark dark:text-gray-200;
 }
 
+.ant-dropdown-menu-root {
+  @apply dark:bg-dark border border-support shadow shadow-support;
+}

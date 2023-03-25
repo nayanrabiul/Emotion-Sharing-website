@@ -6,6 +6,7 @@ import { Col, Row } from "antd";
 import { Border, PostBorder } from "../common/Border.jsx";
 import { BsArrowRight } from "react-icons/bs";
 import { trimDescription } from "../../helpers/trim_text";
+import { Link, Navigate } from "react-router-dom";
 
 const Posts = ({ url }) => {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ const Posts = ({ url }) => {
 
   const [posts, getPosts, { headers }] = useFetch(url.fetch, {
     ...url.query,
+    _expand: "user",
     _page: pageNumber,
     _limit: pageLimit,
   });
@@ -40,11 +42,19 @@ const Posts = ({ url }) => {
               <div
                 key={post?.id}
                 className="h-[230px] relative border cursor-pointer bg-white p-2 rounded dark:bg-dark dark:border-main"
-                onClick={() => navigate(`/post/${post?.id}`)}
               >
-                <h2 className="text-lg text-cyan-800 font-semibold">
+                <h2
+                  onClick={() => navigate(`/post/${post?.id}`)}
+                  className="text-lg text-cyan-800 font-semibold"
+                >
                   {post?.title}
                 </h2>
+                <div className="flex justify-between my-1">
+                  <Link to={`/user-profile/${post?.user?.id}`}>
+                    <p className="text-gray-400">@{post.user.username}</p>
+                  </Link>{" "}
+                  <p className="text-gray-400 ">{post?.user?.email}</p>
+                </div>
                 <p className="text-gray-500">{trimDescription(post?.body)}</p>
 
                 <button className="center space-x-2 absolute bottom-2 right-2 p-1 hover:bg-main rounded cursor-pointer">

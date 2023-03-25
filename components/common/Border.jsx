@@ -25,7 +25,7 @@ export const PostBorder = ({ children, justify, span = 16, className }) => {
           span={span}
           offset={(24 - span) / 2}
         >
-          <div className="h-[230px] rounded">{children}</div>
+          <div className="h-[290px] rounded">{children}</div>
         </Col>
       </Row>
       <div className="bg-support"></div>
