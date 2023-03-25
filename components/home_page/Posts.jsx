@@ -7,6 +7,7 @@ import { Border, PostBorder } from "../common/Border.jsx";
 import { BsArrowRight } from "react-icons/bs";
 import { trimDescription } from "../../helpers/trim_text";
 import { Link, Navigate } from "react-router-dom";
+import {Skeleton} from 'antd'
 
 const Posts = ({ url }) => {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ const Posts = ({ url }) => {
   const [pageLimit, setPageLimit] = useState(10);
   const [totalPostCount, setTotalPostCount] = useState(0);
 
-  const [posts, getPosts, { headers }] = useFetch(url.fetch, {
+  const [posts, getPosts, { headers,loading }] = useFetch(url.fetch, {
     ...url.query,
     _expand: "user",
     _page: pageNumber,
@@ -32,6 +33,18 @@ const Posts = ({ url }) => {
       setTotalPostCount(parseInt(headers["x-total-count"], 10));
     else setTotalPostCount(posts?.length);
   }, [headers]);
+
+  if (loading) {
+    return (
+      <Row className="mt-6">
+        {[...Array(10).keys()]?.map((index) => (
+          <Col xs={12} md={12} xl={8} className={"p-3"} key={index}>
+            <Skeleton loading={loading} active></Skeleton>;
+          </Col>
+        ))}
+      </Row>
+    );
+  }
 
   return (
     <div className="mx-auto mt-6">

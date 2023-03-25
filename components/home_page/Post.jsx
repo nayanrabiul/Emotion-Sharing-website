@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useFetch } from "../../helpers/hooks.js";
 import { fetchPosts } from "../../helpers/backend_helper.js";
+import { Skeleton } from "antd";
 
 const Post = () => {
   const { id } = useParams();
@@ -18,12 +19,14 @@ const Post = () => {
     }
   }, [data]);
 
+
   if (loading) {
-    return <p>Loading...</p>;
+    return <Skeleton className="mt-6" loading={loading} active></Skeleton>;
   }
 
   return (
     <div className="max-w-xl mx-auto">
+
       <h1 className="text-3xl font-bold mb-4">{post?.title}</h1>
       <p className="mb-8">{post?.body}</p>
       {post?.comments?.map((comment) => (

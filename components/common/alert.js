@@ -1,42 +1,29 @@
-import Swal from "sweetalert2"
-import React from "react"
+import { notification } from "antd";
 
-const swalAlert = {
-    success: async (message, t) => {
-        await Swal.fire({
-            title: !!t ? t("Success") : "Success",
-            html: message,
-            icon: 'success',
-        })
-    },
-    error: async (message, t) => {
-        await Swal.fire({
-            title: !!t ? t("Error") : "Error",
-            html: message,
-            icon: 'error',
-        })
-    },
-    warning: async (message, timer = true) => {
-        await Swal.fire({
-            title: "Warning",
-            html: message,
-            icon: 'warning',
-            timer: timer ? 3000 : undefined
-        })
-    },
-    confirm: async (message, confirmText, t) => {
-        return await Swal.fire({
-            title: !!t ? t("Are you sure?") : "Are you sure?",
-            html: message,
-            icon: 'question',
-            showConfirmButton: true,
-            confirmButtonText: confirmText || (!!t ? t("Yes") : "Yes"),
-            cancelButtonText: !!t ? t("Cancel") : "Cancel",
-            showCancelButton: true
-        })
-    }
-}
+export const openSuccessNotification = (message, description) => {
+  notification.success({
+    message,
+    description,
+  });
+};
 
-export default swalAlert
+export const openInfoNotification = (message, description) => {
+  notification.info({
+    message,
+    description,
+  });
+};
 
+export const openWarningNotification = (message, description) => {
+  notification.warning({
+    message,
+    description,
+  });
+};
 
+export const openErrorNotification = (message, description) => {
+  notification.error({
+    message,
+    description,
+  });
+};

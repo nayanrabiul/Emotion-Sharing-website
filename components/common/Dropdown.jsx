@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { Border } from "./Border";
 import { AiOutlineUser } from "react-icons/ai";
+import { openErrorNotification, openSuccessNotification } from "./alert";
 
 function Dropdown({ user, setUser }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -32,6 +33,9 @@ function Dropdown({ user, setUser }) {
             onClick={() => {
               setUser(null);
               localStorage.removeItem("user");
+              openSuccessNotification(
+                `User Log-out successfully`
+              );
               return <Navigate to="/"></Navigate>;
             }}
           >

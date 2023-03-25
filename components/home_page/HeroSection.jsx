@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import { Modal, Form, Input, Button, Row, Col } from "antd";
 import axios from "axios";
-import {Border} from "../common/Border";
+import { Border } from "../common/Border";
+import { useAction } from "../../helpers/hooks";
+import { postPost } from "../../helpers/backend_helper";
+import {
+  openErrorNotification,
+  openSuccessNotification,
+} from "../common/alert";
 
 const HeroSection = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -16,24 +22,24 @@ const HeroSection = () => {
 
   const onFinish = async (values) => {
     try {
-      fetch("https://jsonplaceholder.typicode.com/posts", {
-        method: "POST",
-        body: JSON.stringify({
+      useAction(
+        postPost,
+        {
           title: values.title,
           body: values.body,
           userId: values.userId,
-        }),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
         },
-      })
-        .then((response) => response.json())
-        .then(async (json) => {
-          const fresponse = await axios.get(
-            `https://jsonplaceholder.typicode.com/posts/${json.id}`
-          );
-          console.log(fresponse.data);
-        });
+        (d) => {
+          if (d.status >= 200 && d.status < 300) {
+            openSuccessNotification(
+              `Post Successfull`,
+              `Title:${d.data.title} \n Body:${d.data.body} \n Id:${d.data.id}`
+            );
+          } else {
+            openErrorNotification("Failed to Posts");
+          }
+        }
+      );
     } catch (error) {
       console.error(error);
     }

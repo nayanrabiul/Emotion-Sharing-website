@@ -5,12 +5,13 @@ import { BsArrowRight } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { useFetch } from "../../helpers/hooks";
 import { fetchPosts } from "../../helpers/backend_helper";
+import { Skeleton } from "antd";
 
 const TrendingPost = () => {
   const intervalRef = useRef(null);
   const navigate = useNavigate();
 
-  const [data, getTrendingPosts] = useFetch(fetchPosts, {
+  const [data, getTrendingPosts, { loading }] = useFetch(fetchPosts, {
     id: getRandomNumber(1, 100),
     _expand: "user",
   });
@@ -23,7 +24,6 @@ const TrendingPost = () => {
       setPost(data[0]);
     }
   }, [data]);
-
 
   const fetchTrendingPosts = () => {
     getTrendingPosts({
@@ -50,6 +50,9 @@ const TrendingPost = () => {
     };
   }, []);
 
+  if (loading) {
+    return <Skeleton className="mt-6" loading={loading} active></Skeleton>;
+  }
   return (
     <div className="mt-7 container mx-auto">
       <HeroBorder span={24}>

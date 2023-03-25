@@ -20,7 +20,7 @@ export async function get(url, data, config = {}) {
 export async function post(url, data, config = {}) {
     return axiosApi
         .post(url, data, {...config})
-        .then(response => response.data)
+        .then(response => response)
 }
 
 export async function put(url, data, config = {}) {
