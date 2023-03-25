@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from "react";
 import Footer from "./Footer.jsx";
-import Nav from "./Nav.jsx";
+import Nav from "./Nav.tsx";
 import {Col, Row} from "antd";
 
 const Layout = ({children}) => {
@@ -8,9 +8,9 @@ const Layout = ({children}) => {
 
         <div className={'px-4 md:px-12 lg:px-32 '}>
             <Nav/>
-            <div>
+            <div className="pb-32">
                 {children}
-            </div>
+            </div >
             {/*<Footer/>*/}
         </div>)
 

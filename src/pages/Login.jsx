@@ -1,6 +1,8 @@
 import React, {useContext, useState} from "react";
 import {useNavigate} from 'react-router-dom';
 import {AuthContext} from "../../contexts/AuthProvider.jsx";
+import { fetchUsers } from "../../helpers/backend_helper.js";
+import {useFetch} from '../../helpers/hooks'
 
 const Login = () => {
     const [userId, setUserId] = useState("");
@@ -9,11 +11,13 @@ const Login = () => {
     const handleInputChange = (e) => {
         setUserId(e.target.value);
     };
+    const [userProfile,getUserProfile] = useFetch(fetchUsers, {},false);//dont load initially
 
-    const handleSubmit = async  (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        await  localStorage.setItem("user", userId);
-        setUser(userId);
+        await getUserProfile({id:userId})
+        setUser(userProfile[0]);
+        await  localStorage.setItem("user", JSON.stringify(userProfile[0]));
         navigate(`/user/${userId}`);
     };
 
@@ -38,7 +42,7 @@ const Login = () => {
                                 required
                                 value={userId}
                                 onChange={handleInputChange}
-                                className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                className="appearance-none block w-full px-3 py-2  border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                             />
                         </div>
                     </div>
@@ -46,7 +50,7 @@ const Login = () => {
                     <div>
                         <button
                             type="submit"
-                            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            className="w-full flex justify-center py-2 px-4  border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                         >
                             Log in
                         </button>

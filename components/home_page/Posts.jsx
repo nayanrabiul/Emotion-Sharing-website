@@ -1,48 +1,71 @@
-import React, {useEffect, useState} from "react";
-import {useFetch} from "../../helpers/hooks.js";
-import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useFetch } from "../../helpers/hooks.js";
 import Paginate from "./Pagination.jsx";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { Col, Row } from "antd";
+import { Border, PostBorder } from "../common/Border.jsx";
+import { BsArrowRight } from "react-icons/bs";
+import { trimDescription } from "../../helpers/trim_text";
 
-const Posts = ({url}) => {
-    const navigate = useNavigate();
-    const [pageNumber, setPageNumber] = useState(1);
-    const [pageLimit, setPageLimit] = useState(10);
-    const [totalPostCount, setTotalPostCount] = useState(0);
+const Posts = ({ url }) => {
+  const navigate = useNavigate();
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pageLimit, setPageLimit] = useState(10);
+  const [totalPostCount, setTotalPostCount] = useState(0);
 
-    const [posts, getPosts, {headers}] = useFetch(url.fetch, {...url.query, _page: pageNumber, _limit: pageLimit});
+  const [posts, getPosts, { headers }] = useFetch(url.fetch, {
+    ...url.query,
+    _page: pageNumber,
+    _limit: pageLimit,
+  });
 
-    //set pagination data
-    useEffect(() => {
-        getPosts({_page: pageNumber, _limit: pageLimit});
-    }, [pageNumber, pageLimit]);
+  //set pagination data
+  useEffect(() => {
+    getPosts({ _page: pageNumber, _limit: pageLimit });
+  }, [pageNumber, pageLimit]);
 
-    //fetch total post counts
-    useEffect(() => {
-        if (url._paginationFromHeader && headers && headers['x-total-count'])
-            setTotalPostCount(parseInt(headers['x-total-count'], 10));
-        else
-            setTotalPostCount(posts?.length);
-    }, [headers]);
+  //fetch total post counts
+  useEffect(() => {
+    if (url._paginationFromHeader && headers && headers["x-total-count"])
+      setTotalPostCount(parseInt(headers["x-total-count"], 10));
+    else setTotalPostCount(posts?.length);
+  }, [headers]);
 
+  return (
+    <div className="mx-auto mt-6">
+      <Row>
+        {posts?.map((post, index) => (
+          <Col xs={12} md={12} xl={8} className={"p-1"}>
+            <PostBorder span={24}>
+              <div
+                key={post?.id}
+                className="h-[230px] relative border cursor-pointer bg-white p-2 rounded dark:bg-dark dark:border-main"
+                onClick={() => navigate(`/post/${post?.id}`)}
+              >
+                <h2 className="text-lg text-cyan-800 font-semibold">
+                  {post?.title}
+                </h2>
+                <p className="text-gray-500">{trimDescription(post?.body)}</p>
 
-    return (<div className=" mx-auto">
-        <ul className="divide-y divide-gray-200">
-            {
-                posts?.map((post, index) => (
-                    <li key={post?.id}
-                        className="py-4 hover:bg-red-100 hover:cursor-pointer"
-                        onClick={() => navigate(`/post/${post?.id}`)}>
-                        <h2 className="text-lg font-semibold">{post?.title}</h2>
-                        <p className="text-gray-500">{post?.body}</p>
-                    </li>
-                ))
-            }
-        </ul>
-        <div className={'flex justify-end py-4'}>
-            <Paginate setPageLimit={setPageLimit} setPageNumber={setPageNumber} totalPostCount={totalPostCount}/>
-        </div>
-    </div>);
+                <button className="center space-x-2 absolute bottom-2 right-2 p-1 hover:bg-main rounded cursor-pointer">
+                  <p className="text-cyan-800">Read mode </p>
+                  <BsArrowRight fill="#010014" />
+                </button>
+              </div>
+            </PostBorder>
+          </Col>
+        ))}
+      </Row>
+
+      <div className={"flex justify-end py-4"}>
+        <Paginate
+          setPageLimit={setPageLimit}
+          setPageNumber={setPageNumber}
+          totalPostCount={totalPostCount}
+        />
+      </div>
+    </div>
+  );
 };
 
 export default Posts;
