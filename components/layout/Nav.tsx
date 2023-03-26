@@ -55,7 +55,7 @@ const Nav = () => {
           ) : (
             <div className="flex-1">
               <Link to={`/login`}>
-                <Border>
+                <Border justify={'end'}>
                   <button className="border bg-main dark:text-dark">
                     Login
                   </button>
