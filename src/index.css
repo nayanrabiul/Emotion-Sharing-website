@@ -16,3 +16,6 @@
 .ant-dropdown-menu-root {
   @apply dark:bg-dark border border-support shadow shadow-support;
 }
+.ant-modal-content{
+  @apply dark:bg-gray-900 border border-support shadow shadow-support dark:text-cyan-600
+}

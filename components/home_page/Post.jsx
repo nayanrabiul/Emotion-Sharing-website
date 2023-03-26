@@ -1,15 +1,33 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
-import { useFetch } from "../../helpers/hooks.js";
+import { useAction, useFetch } from "../../helpers/hooks.js";
 import HeroSection from "../../components/home_page/HeroSection.jsx";
-import { Col, Row, Skeleton } from "antd";
-import { fetchPosts, fetchUsers } from "../../helpers/backend_helper.js";
+import { Col, Row, Skeleton, Form, Spin } from "antd";
+import {
+  fetchPosts,
+  fetchUsers,
+  postComments,
+} from "../../helpers/backend_helper.js";
 import TrendingPost from "../../components/home_page/TrendingPost.jsx";
+import { GoCommentDiscussion } from "react-icons/go";
+import { BiSend } from "react-icons/bi";
+import { AuthContext } from "../../contexts/AuthProvider.jsx";
+import {
+  openErrorNotification,
+  openSuccessNotification,
+} from "../common/alert.js";
+import FormInput from "../Form/FormInput.jsx";
+import { useNavigate } from "react-router-dom";
 
 const Post = () => {
+  const [form] = Form.useForm();
+  const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
   const { id } = useParams();
   const [post, setPost] = useState({});
-  const [user, setUser] = useState({});
+  const [profile, setProfile] = useState({});
+  const [commentInput, setCommentInput] = useState(-1);
+  const [spinning, setSpinning] = useState(false);
 
   const [isTablet, setTablet] = useState(window.innerWidth > 768);
   const updateMedia = () => {
@@ -22,6 +40,7 @@ const Post = () => {
   });
   const [userData, getUser, { loading1 }] = useFetch(fetchUsers, {}, false);
 
+  // if id change reFetch Post
   useEffect(() => {
     if (!!id) {
       getPost({
@@ -39,7 +58,7 @@ const Post = () => {
 
   useEffect(() => {
     if (!!userData) {
-      setUser(userData[0]);
+      setProfile(userData[0]);
     }
   }, [userData]);
 
@@ -66,24 +85,65 @@ const Post = () => {
     );
   }
 
+  const onFinish = async (values) => {
+    if (!user) {
+      openErrorNotification("Unable to Comment", "Please Log-In first...");
+    } else {
+      setSpinning(true);
+      await useAction(postComments, { postId: post.id, data: values }, (d) => {
+        setSpinning(false);
+        openSuccessNotification(
+          `Comment Successfull`,
+          <p>
+            <span className="text-cyan-600 font-medium mr-1">Comment :</span>
+            {d.data.data.comment} <br />
+            <span className="text-cyan-600 font-medium mr-1"> postId :</span>
+            {d.data.postId} <br />
+            <span className="text-cyan-600 font-medium mr-1">Id :</span>
+            {d.data.id} <br />
+          </p>
+        );
+      });
+      setSpinning(false);
+    }
+  };
   return (
     <div>
+      <Spin className="fixed top-3 right-3" spinning={spinning} size="large" />
       <HeroSection />
       {isTablet ? (
         <Row gutter={10}>
           <Col span={16} className="mt-6">
             <div className="max-w-xl mx-auto">
               <h1 className="text-3xl font-bold mb-4">{post?.title}</h1>
-              <div className="flex justify-between my-2">
-                <p
-                  onClick={() => navigate(`/user-profile/${user?.id}`)}
-                  className="text-gray-400"
-                >
-                  @{user?.username}
-                </p>
-                <p className="text-gray-400 ">{user?.email}</p>
+              {/* user details  */}
+              <div
+                onClick={() => navigate(`/user-profile/${profile?.id}`)}
+                className="flex cursor-pointer justify-between my-1"
+              >
+                <p className="text-gray-400">@{profile?.username}</p>
+                <p className="text-gray-400 ">{profile?.email}</p>
               </div>
               <p className="mb-12">{post?.body}</p>
+
+              <br />
+              <p className="text-lg my-4">Make Comments</p>
+              <Form form={form} onFinish={onFinish}>
+                <Row gutter={4}>
+                  <Col span={22}>
+                    <FormInput
+                      span={24}
+                      placeholder="Enter Comment..."
+                      name={"comment"}
+                    />
+                  </Col>
+                  <Col span={2} className="center">
+                    <button>
+                      <BiSend fill="#B9E0FF" className="h-8 w-8" />
+                    </button>
+                  </Col>
+                </Row>
+              </Form>
 
               {/* comment  */}
               <p className="text-lg my-4">
@@ -92,25 +152,69 @@ const Post = () => {
                 </span>
                 Comments
               </p>
-              {post?.comments?.map((comment) => (
+              {post?.comments?.map((comment, index) => (
                 <div
-                  key={comment.id}
-                  className=" shadow shadow-dark dark:shadow-support dark:bg-dark p-4 rounded-lg mb-4"
+                  key={index}
+                  className={`${
+                    commentInput === index
+                      ? "my-8 border-2 rounded-xl shadow dark:shadow-support"
+                      : ""
+                  }`}
                 >
-                  <p className="mt-2 dark:text-gray-700 text-sm text-gray-300 font-medium">
-                    {comment.email}
-                  </p>
-                  <h2 className="text-lg font-semibold">{comment.name}</h2>
-                  <p className="dark:text-gray-200  text-gray-500">
-                    {comment.body}
-                  </p>
+                  <div className="relative shadow shadow-dark dark:shadow-support dark:bg-dark p-3 rounded-lg mb-4">
+                    <p className="mt-2 dark:text-gray-700 text-sm text-gray-300 font-medium">
+                      {comment.email}
+                    </p>
+                    <h2 className="text-lg font-semibold">{comment.name}</h2>
+                    <p className="dark:text-gray-200  text-gray-500">
+                      {comment.body}
+                    </p>
+                    <div
+                      className="absolute bottom-3 right-3 center hover:cursor-pointer"
+                      onClick={() => {
+                        if (!user) {
+                          openErrorNotification(
+                            "Unable to Comment",
+                            "Please Log-In first..."
+                          );
+                        } else {
+                          setCommentInput(index === commentInput ? -1 : index);
+                        }
+                      }}
+                    >
+                      <GoCommentDiscussion fill="#B9E0FF" />
+                      <p className="ml-2">Reply</p>
+                    </div>
+                  </div>
+
+                  <Form form={form} onFinish={onFinish}>
+                    <Row
+                      gutter={4}
+                      className={`${
+                        commentInput === index ? "flex" : "hidden"
+                      }`}
+                    >
+                      <Col span={22}>
+                        <FormInput
+                          span={24}
+                          placeholder="Enter Comment..."
+                          name={"comment"}
+                        />
+                      </Col>
+                      <Col span={2} className="center">
+                        <button>
+                          <BiSend fill="#B9E0FF" className="h-8 w-8" />
+                        </button>
+                      </Col>
+                    </Row>
+                  </Form>
                 </div>
               ))}
             </div>
           </Col>
           <Col span={8}>
             <TrendingPost />
-            <Profile user={user} />
+            <Profile profile={profile} />
           </Col>
         </Row>
       ) : (
@@ -145,7 +249,7 @@ const Post = () => {
                 </div>
               ))}
             </div>
-            <Profile user={user} />
+            <Profile profile={profile} />
           </Col>
         </Row>
       )}
@@ -155,26 +259,28 @@ const Post = () => {
 
 export default Post;
 
-const Profile = ({ user }) => {
+const Profile = ({ profile }) => {
   return (
     <div className="mt-6 max-w-xl mx-auto p-8 rounded border-4 border-support text-cyan-800">
       <h1 className="text-4xl font-bold mb-4 text-center text-main">
-        {user ? user?.username : null}
+        {profile ? profile?.username : null}
       </h1>
       <div className="flex justify-center items-center mb-8">
         <div className="h-1 bg-main mr-2 flex-grow"></div>
-        <div className="text-gray-500 text-lg font-semibold">{user?.name}</div>
+        <div className="text-gray-500 text-lg font-semibold">
+          {profile?.name}
+        </div>
         <div className="h-1 bg-main ml-2 flex-grow"></div>
       </div>
 
       <div className="bg-white p-4 rounded-lg  flex-grow mt-8">
-        <h2 className="text-2xl font-bold mb-4 text-main">{user?.email}</h2>
+        <h2 className="text-2xl font-bold mb-4 text-main">{profile?.email}</h2>
         <p className="text-lg mb-2">
-          <span className="text-main font-bold">Phone:</span> {user?.phone}
+          <span className="text-main font-bold">Phone:</span> {profile?.phone}
         </p>
         <p className="text-lg">
           <span className="text-main font-bold">Website:</span>
-          {user?.website}
+          {profile?.website}
         </p>
       </div>
 
@@ -182,19 +288,19 @@ const Profile = ({ user }) => {
         <h2 className="text-2xl font-bold mb-4 text-main">Address</h2>
         <p className="text-lg mb-2">
           <span className="text-main font-bold">Street:</span>{" "}
-          {user?.address?.street || ""}, {user?.address?.suite || ""}
+          {profile?.address?.street || ""}, {profile?.address?.suite || ""}
         </p>
         <p className="text-lg mb-2">
           <span className="text-main font-bold">City:</span>{" "}
-          {user?.address?.city || ""}
+          {profile?.address?.city || ""}
         </p>
         <p className="text-lg">
           <span className="text-main font-bold">Zipcode:</span>{" "}
-          {user?.address?.zipcode || ""}
+          {profile?.address?.zipcode || ""}
         </p>
         <p className="text-lg mt-4">
           <span className="text-main font-bold">Geolocation:</span>{" "}
-          {user?.address?.geo?.lat || ""}, {user?.address?.geo?.lng || ""}
+          {profile?.address?.geo?.lat || ""}, {profile?.address?.geo?.lng || ""}
         </p>
       </div>
 
@@ -202,15 +308,15 @@ const Profile = ({ user }) => {
         <h2 className="text-2xl font-bold mb-4 text-main">Company</h2>
         <p className="text-lg mb-2">
           <span className="text-main font-bold">Name:</span>{" "}
-          {user?.company?.name || ""}
+          {profile?.company?.name || ""}
         </p>
         <p className="text-lg mb-2">
           <span className="text-main font-bold">Catchphrase:</span>{" "}
-          {user?.company?.catchPhrase || ""}
+          {profile?.company?.catchPhrase || ""}
         </p>
         <p className="text-lg">
           <span className="text-main font-bold">Business:</span>{" "}
-          {user?.company?.bs || ""}
+          {profile?.company?.bs || ""}
         </p>
       </div>
     </div>

@@ -63,21 +63,19 @@ const TrendingPost = () => {
       <PostBorder span={24} className="mt-3">
         <div
           key={trendingPosts?.id}
-          className="h-[230px] relative border cursor-pointer bg-white p-2 rounded dark:bg-dark dark:border-main"
-          onClick={() => navigate(`/post/${trendingPosts?.id}`)}
+          className="h-[230px] relative border  bg-white p-2 rounded dark:bg-dark dark:border-main"
         >
-          <h2 className="text-lg text-cyan-800 font-semibold">
+          <h2
+            onClick={() => navigate(`/post/${trendingPosts?.id}`)}
+            className="text-lg text-cyan-800 cursor-pointer font-semibold"
+          >
             {trendingPosts?.title}
           </h2>
-          <div className="flex justify-between my-1">
-            <p
-              onClick={() =>
-                navigate(`/user-profile/${trendingPosts?.user?.id}`)
-              }
-              className="text-gray-400"
-            >
-              @{trendingPosts?.user?.username}
-            </p>
+          <div
+            onClick={() => navigate(`/user-profile/${trendingPosts?.user?.id}`)}
+            className="flex cursor-pointer justify-between my-1"
+          >
+            <p className="text-gray-400">@{trendingPosts?.user?.username}</p>
             <p className="text-gray-400 ">{trendingPosts?.user?.email}</p>
           </div>
           <p className="text-gray-500">{trendingPosts?.body}</p>

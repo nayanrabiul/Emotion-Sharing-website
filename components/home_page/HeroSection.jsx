@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Modal, Form, Input, Button, Row, Col } from "antd";
+import { Modal, Form, Input, Button, Row, Col, Spin } from "antd";
 import axios from "axios";
 import { Border } from "../common/Border";
 import { useAction } from "../../helpers/hooks";
@@ -8,9 +8,12 @@ import {
   openErrorNotification,
   openSuccessNotification,
 } from "../common/alert";
+import FormInput from "../Form/FormInput";
 
 const HeroSection = () => {
+  const [spinning, setSpinning] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [form] = Form.useForm();
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -22,6 +25,7 @@ const HeroSection = () => {
 
   const onFinish = async (values) => {
     try {
+      setSpinning(true);
       useAction(
         postPost,
         {
@@ -33,14 +37,26 @@ const HeroSection = () => {
           if (d.status >= 200 && d.status < 300) {
             openSuccessNotification(
               `Post Successfull`,
-              `Title:${d.data.title} \n Body:${d.data.body} \n Id:${d.data.id}`
+              <p>
+                <span className="text-cyan-600 font-medium mr-1">Title :</span>
+                {d.data.title} <br />
+                <span className="text-cyan-600 font-medium mr-1"> Body :</span>
+                {d.data.body} <br />
+                <span className="text-cyan-600 font-medium mr-1">Id :</span>
+                {d.data.id} <br />
+              </p>
             );
+
+            setSpinning(false);
           } else {
             openErrorNotification("Failed to Posts");
+            setSpinning(false);
           }
         }
       );
     } catch (error) {
+      setSpinning(false);
+
       console.error(error);
     }
   };
@@ -89,7 +105,7 @@ const HeroSection = () => {
                 </div>
               </div>
               <div className="w-[70%] md:w-[60%] absolute -bottom-4 ">
-                <Border justify={'center'}>
+                <Border justify={"center"}>
                   <button
                     className=" border  text-cyan-600  bg-white font-semibold py-2 px-4 rounded dark:bg-dark dark:border-main dark:text-gray-200"
                     onClick={showModal}
@@ -103,26 +119,28 @@ const HeroSection = () => {
                 onCancel={handleCancel}
                 footer={null}
               >
-                <Form layout="vertical" onFinish={onFinish}>
-                  <Form.Item
+                <Form form={form} layout="vertical" onFinish={onFinish}>
+                  <FormInput
+                    span={24}
                     label="Title"
                     name="title"
                     rules={[
                       { required: true, message: "Please input the title!" },
                     ]}
-                  >
-                    <Input />
-                  </Form.Item>
-                  <Form.Item
+                  />
+
+                  <FormInput
+                    span={24}
+                    textArea
                     label="Body"
                     name="body"
                     rules={[
                       { required: true, message: "Please input the body!" },
                     ]}
-                  >
-                    <Input.TextArea />
-                  </Form.Item>
-                  <Form.Item
+                  />
+
+                  <FormInput
+                    span={24}
                     label="User ID"
                     name="userId"
                     rules={[
@@ -131,14 +149,12 @@ const HeroSection = () => {
                         message: "Please input the user ID!",
                       },
                     ]}
-                  >
-                    <Input />
-                  </Form.Item>
-                  <Form.Item>
-                    <Button type="primary" htmlType="submit">
-                      Submit
-                    </Button>
-                  </Form.Item>
+                  />
+                  
+                  <Border>
+                    <button className="border bg-main">Submit</button>
+                  </Border>
+                  <Spin className="my-2" spinning={spinning} />
                 </Form>
               </Modal>
             </div>

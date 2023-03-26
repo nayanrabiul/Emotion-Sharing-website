@@ -15,8 +15,16 @@ import {
 
 const User = () => {
   const { id } = useParams();
-  const [user, setUser, { loading }] = useFetch(fetchUsers, { id });
+  const [key, setKey ]= useState(0);
+  const [user, getUser, { loading }] = useFetch(fetchUsers, { id });
   const [isTablet, setTablet] = useState(window.innerWidth > 768);
+
+  useEffect(() => {
+    if (!!id) {
+      getUser({ id });
+      setKey(key + 1);
+    }
+  }, [id]);
 
   const updateMedia = () => {
     setTablet(window.innerWidth > 768);
@@ -32,7 +40,7 @@ const User = () => {
       <Row className="mt-6">
         {[...Array(10).keys()]?.map((index) => (
           <Col xs={12} md={12} xl={8} className={"p-3"} key={index}>
-            <Skeleton loading={loading} active></Skeleton>;
+            <Skeleton loading={loading} active></Skeleton>
           </Col>
         ))}
       </Row>
@@ -56,6 +64,7 @@ const User = () => {
             </UserProfileBorder>
 
             <Posts
+              key={key}
               url={{
                 fetch: fetchPosts,
                 query: { userId: id },

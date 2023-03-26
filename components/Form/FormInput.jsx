@@ -4,9 +4,11 @@ import { Border } from "../common/Border";
 const FormInput = ({
   name,
   label,
+  justify,
   rules = [],
+  type = "text",
   required = false,
-
+  isNumber,
   textArea,
   span,
   initialValue = "",
@@ -31,7 +33,7 @@ const FormInput = ({
       initialValue={initialValue}
     >
       {textArea ? (
-        <Row>
+        <Row justify={justify}>
           <Col
             className="bg-support border-2 border-black rounded relative flex"
             span={span}
@@ -51,7 +53,7 @@ const FormInput = ({
         </Row>
       ) : (
         <div className="min-w-full">
-          <Row>
+          <Row justify={justify}>
             <Col
               className="bg-support border-2 border-black rounded relative flex"
               span={span}
@@ -75,3 +77,69 @@ const FormInput = ({
   );
 };
 export default FormInput;
+
+
+
+
+export const FormInputEdit = ({
+  name,
+  label,
+  className,
+  type = "text",
+  required = false,
+  initialValue = "",
+  rules = [],
+  dependencies = [],
+  isEmail,
+  readOnly,
+  onChange,
+  placeholder,
+  textArea = false,
+  style,
+  disabledDate,
+  autoComplete,
+  span,
+}) => {
+  let initRules = [
+    {
+      required: required,
+      message: `Please provide ${label?.toLowerCase() || "a value"}`,
+    },
+  ];
+  if (isEmail === true) {
+    initRules.push({
+      type: "email",
+      message: "Please enter a valid email address",
+    });
+  }
+
+  return (
+    <Form.Item
+      name={name}
+      className={className}
+      label={label}
+      dependencies={dependencies}
+      initialValue={initialValue}
+      rules={[...initRules, ...rules]}
+    >
+      {textArea ? (
+        <textarea
+          onChange={onChange}
+          autoFocus={true}
+          className="border-2 border-main rounded w-full  h-[122px] px-3 dark:bg-dark dark:border-main dark:text-support"
+          placeholder={placeholder}
+        />
+      ) : (
+        <input
+          type={type}
+          readOnly={readOnly}
+          onChange={onChange}
+          placeholder={placeholder}
+          style={style}
+          autoComplete={autoComplete}
+          className="w-full border-2 border-main rounded  px-3 dark:bg-dark dark:border-main dark:text-support"
+        />
+      )}
+    </Form.Item>
+  );
+};
