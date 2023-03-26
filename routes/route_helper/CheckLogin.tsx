@@ -4,10 +4,9 @@ import {AuthContext} from '../../contexts/AuthProvider';
 
 const CheckLogin = ({children}) => {
     const {user} = useContext(AuthContext);
-
-        console.log("here")
     if (user) {
-        return <Navigate to={`/user/${user}`}/>;
+        console.log(user,"fkasjlkdjfajsdf")
+        return <Navigate to={`/user/${user.id}`}/>;
     }
     else{
         return children;

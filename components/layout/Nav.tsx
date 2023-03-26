@@ -26,13 +26,13 @@ const Nav = () => {
   return (
     <nav>
       <Row className="pt-5">
-        <Col span={3}>
+        <Col span={4}>
           <Link to={`/`}>
             <img className={"h-11 w-11"} src={"/logo.svg"} alt={"logo"} />
           </Link>
         </Col>
-        <Col xs={14} md={17}>
-          <div className="w-full">
+        <Col xs={14} md={16}>
+          <div className="w-full ">
             <SearchBox />
           </div>
         </Col>

@@ -1,89 +1,84 @@
+import { Col, Form, Row } from "antd";
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   openErrorNotification,
   openSuccessNotification,
 } from "../../components/common/alert.js";
+import { Border } from "../../components/common/Border.jsx";
+import FormInput from "../../components/Form/FormInput.jsx";
 import { AuthContext } from "../../contexts/AuthProvider.jsx";
 import { fetchUsers } from "../../helpers/backend_helper.js";
 import { useFetch } from "../../helpers/hooks";
 
 const Login = () => {
-  const [userId, setUserId] = useState("");
-  const { user, setUser } = useContext(AuthContext);
+  const [form] = Form.useForm();
   const navigate = useNavigate();
-
-  const handleInputChange = (e) => {
-    setUserId(e.target.value);
-  };
+  const { user, setUser } = useContext(AuthContext);
+  const [userId, setUserId] = useState(null);
   const [userProfile, getUserProfile] = useFetch(fetchUsers, {}, false); //dont load initially
 
-  const router = () => {
-    if (userProfile?.length > 0) {
-      console.log(userId);
-      setUser(userProfile);
-      localStorage.setItem("user", JSON.stringify(userProfile));
-      openSuccessNotification(
-        `User ${userProfile.username} logged in Successfully`
-      );
-      navigate(`/user/${userId}`);
-    } else {
-      console.log("er", userId);
-      openErrorNotification(
-        `Wrong Credential`,
-        "Please enter correct 'userId' to login..."
-      );
+  useEffect(() => {
+    if (!!userProfile) {
+      if (userProfile?.length > 0) {
+        form.resetFields();
+        setUser(userProfile[0]);
+        localStorage.setItem("user", JSON.stringify(userProfile[0]));
+        openSuccessNotification(
+          `User ${userProfile[0].username} logged in Successfully`
+        );
+        navigate(`/user/${userId}`);
+      } else {
+        console.log("er");
+        openErrorNotification(
+          `Wrong Credential`,
+          "Please enter correct 'userId' to login..."
+        );
+      }
     }
-  };
+  }, [userProfile]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    await getUserProfile({ id: userId });
-    router();
+  useEffect(() => {
+    if (!!userId) {
+      getUserProfile({ id: userId });
+    }
+  }, [userId]);
+
+  const handleFinish = async (values) => {
+    console.log(values, "fajslkjkf");
+    setUserId(values.userID);
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Log in to your account
-        </h2>
-      </div>
-
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6" onSubmit={handleSubmit}>
-            <div>
-              <label
-                htmlFor="user_id"
-                className="block text-sm font-medium text-gray-700"
+    <div className="w-full min-h-screen p-32">
+      <div className=" w-full h-[70vh]">
+        <Row className="h-full ">
+          <Col className="center" span={10}>
+            <img src="theme_pic.svg" alt="Theme Picture"></img>
+          </Col>
+          <Col className="center bg-main rounded " span={14}>
+            <div className={"w-full"}>
+              <Form
+                form={form}
+                className="px-64"
+                layout="vertical"
+                onFinish={handleFinish}
               >
-                User ID
-              </label>
-              <div className="mt-1">
-                <input
-                  id="user_id"
-                  name="user_id"
-                  type="text"
-                  autoComplete="username"
+                <FormInput
+                  span={24}
+                  placeholder="Enter User Id..."
+                  name={"userID"}
                   required
-                  value={userId}
-                  onChange={handleInputChange}
-                  className="appearance-none block w-full px-3 py-2  border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
-              </div>
+                <Border>
+                  <button className="border bg-main text-cyan-700">
+                    submit
+                  </button>
+                </Border>
+              </Form>
             </div>
-
-            <div>
-              <button
-                type="submit"
-                className="w-full flex justify-center py-2 px-4  border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              >
-                Log in
-              </button>
-            </div>
-          </form>
-        </div>
+          </Col>
+        </Row>
       </div>
     </div>
   );

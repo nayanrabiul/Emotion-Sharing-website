@@ -56,27 +56,27 @@ const HeroSection = () => {
             <div className="w-full border relative h-[200px] rounded-lg bg-main center">
               <img
                 className="w-11 h-11 absolute top-6 left-32"
-                src="./sad.svg"
+                src="/sad.svg"
               />
               <img
                 className="w-11 h-11 absolute bottom-2 left-24"
-                src="./heart.svg"
+                src="/heart.svg"
               />
 
               <img
                 className="w-11 h-11 absolute top-8 right-32"
-                src="./smile.svg"
+                src="/smile.svg"
               />
               <img
                 className="w-11 h-11 absolute bottom-12 right-32"
-                src="./double-heart.svg"
+                src="/double-heart.svg"
               />
 
               <div className="p-4 relative center">
                 <div className="w-[55%] relative text-center">
                   <img
                     className=" w-11 h-11 absolute left-20 -top-6"
-                    src="./highlight.svg"
+                    src="/highlight.svg"
                   />
                   <h1 className="text-4xl mb-4 font-bold text-white">
                     Share Your Feeling

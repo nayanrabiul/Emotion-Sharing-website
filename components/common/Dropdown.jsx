@@ -33,9 +33,7 @@ function Dropdown({ user, setUser }) {
             onClick={() => {
               setUser(null);
               localStorage.removeItem("user");
-              openSuccessNotification(
-                `User Log-out successfully`
-              );
+              openSuccessNotification(`User Log-out successfully`);
               return <Navigate to="/"></Navigate>;
             }}
           >

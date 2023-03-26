@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Input, Dropdown, Menu, Pagination, Form, Modal } from "antd";
+import { Input, Dropdown, Menu, Pagination, Form, Modal, Row, Col } from "antd";
 import { useFetch } from "../../helpers/hooks.js";
 import { fetchPosts } from "../../helpers/backend_helper.js";
-import { FormInput } from "../Form/FormInput.jsx";
 import { BsArrowRight } from "react-icons/bs";
 import { GiCrossedBones } from "react-icons/gi";
 import { SearchBorder } from "../common/Border.jsx";
 import { useNavigate } from "react-router-dom";
+import FormInput from "../Form/FormInput.jsx";
 
 function SearchBox() {
   const navigate = useNavigate();
-
+  const [form] = Form.useForm();
   const [posts, getPosts] = useFetch(fetchPosts, {}, false); //dont fetch on mount
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -101,12 +101,17 @@ function SearchBox() {
   };
 
   return (
-    <div>
+    <div className="">
       <Form
         onChange={handleIputFocus}
         onFinish={(values) => console.log(values)}
       >
-        <FormInput name={"search"} placeholder={"Search..."} textarea />
+        <FormInput
+          span={16}
+          form={form}
+          name={"value"}
+          placeholder={"Search..."}
+        />
       </Form>
 
       <Dropdown
