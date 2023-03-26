@@ -11,4 +11,6 @@ export const fetchUsers = (data) => get("/users", data);
 
 //comment api
 export const fetchComments = (data) => get("/comments", data);
+
 export const postComments = (data) => post("/comments", data);
+
