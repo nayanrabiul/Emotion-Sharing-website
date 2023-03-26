@@ -32,7 +32,7 @@ const TrendingPost = () => {
   };
 
   const startInterval = () => {
-    intervalRef.current = setInterval(fetchTrendingPosts, 10000); // Refresh every 10 seconds
+    intervalRef.current = setInterval(fetchTrendingPosts, 30000); // Refresh every 10 seconds
   };
 
   const stopInterval = () => {

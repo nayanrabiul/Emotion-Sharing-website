@@ -82,7 +82,7 @@ const Post = () => {
           </Col>
         ))}
       </Row>
-    );
+    )
   }
 
   const onFinish = async (values) => {
