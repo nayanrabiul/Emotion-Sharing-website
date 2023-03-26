@@ -51,7 +51,7 @@ const TrendingPost = () => {
   }, []);
 
   if (loading) {
-    return <Skeleton className="mt-6" loading={loading} active></Skeleton>;
+    return <Skeleton className="mt-6" loading={loading} active></Skeleton>
   }
   return (
     <div className="mt-7 container mx-auto">

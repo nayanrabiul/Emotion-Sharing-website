@@ -78,7 +78,7 @@ const Post = () => {
       <Row className="mt-6">
         {[...Array(10).keys()]?.map((index) => (
           <Col span={13} className={"p-3"} key={index}>
-            <Skeleton loading={loading} active></Skeleton>;
+            <Skeleton loading={loading} active></Skeleton>
           </Col>
         ))}
       </Row>
