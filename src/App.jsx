@@ -16,7 +16,6 @@ const App = () => {
     return () => window.removeEventListener("resize", updateMedia);
   });
 
-
   return (
     <div>
       <HeroSection />
@@ -27,6 +26,10 @@ const App = () => {
           </Col>
           <Col span={8}>
             <TrendingPost />
+            <div className="p-4 mt-4 center hidden md:block">
+
+            <img src="/theme_pic.svg" alt="Theme Picture"></img>
+            </div>
           </Col>
         </Row>
       ) : (

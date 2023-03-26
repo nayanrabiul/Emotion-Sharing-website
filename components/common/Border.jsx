@@ -6,7 +6,6 @@ export const Border = ({ children, justify, span = 16 }) => {
         <Col
           className="bg-support border-2 border-black rounded relative flex"
           span={span}
-          offset={(24 - span) / 2}
         >
           <div className="p-5 rounded">{children}</div>
         </Col>
@@ -59,6 +58,22 @@ export const HeroBorder = ({ children, justify, span = 16 }) => {
           offset={(24 - span) / 2}
         >
           <div className="p-7 w-full rounded">{children}</div>
+        </Col>
+      </Row>
+      <div className="bg-support"></div>
+    </div>
+  );
+};
+
+export const UserProfileBorder = ({ children, justify, span = 16 }) => {
+  return (
+    <div className="min-w-full">
+      <Row justify={justify}>
+        <Col
+          className="bg-support border-2 border-black rounded relative flex"
+          span={span}
+        >
+          <div className="p-10 w-full rounded">{children}</div>
         </Col>
       </Row>
       <div className="bg-support"></div>

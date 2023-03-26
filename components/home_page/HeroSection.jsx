@@ -47,7 +47,7 @@ const HeroSection = () => {
 
   return (
     <div className="min-w-full">
-      <Row justify={"justify"}>
+      <Row justify={"start"}>
         <Col
           className="bg-support border-2 border-black rounded relative flex"
           span={24}
@@ -89,7 +89,7 @@ const HeroSection = () => {
                 </div>
               </div>
               <div className="w-[70%] md:w-[60%] absolute -bottom-4 ">
-                <Border>
+                <Border justify={'center'}>
                   <button
                     className=" border  text-cyan-600  bg-white font-semibold py-2 px-4 rounded dark:bg-dark dark:border-main dark:text-gray-200"
                     onClick={showModal}

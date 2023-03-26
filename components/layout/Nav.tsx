@@ -4,7 +4,7 @@ import { Col, Row } from "antd";
 import { AuthContext } from "../../contexts/AuthProvider.jsx";
 import Dropdown from "../common/Dropdown.jsx";
 import SearchBox from "../home_page/SearchBox.jsx";
-import {Border} from "../common/Border";
+import { Border } from "../common/Border";
 import { DarkModeSwitch } from "react-toggle-dark-mode";
 
 const Nav = () => {
@@ -26,7 +26,7 @@ const Nav = () => {
   return (
     <nav>
       <Row className="pt-5">
-        <Col span={4}>
+        <Col xs={3} md={4}>
           <Link to={`/`}>
             <img className={"h-11 w-11"} src={"/logo.svg"} alt={"logo"} />
           </Link>

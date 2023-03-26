@@ -58,20 +58,23 @@ const Posts = ({ url }) => {
               >
                 <h2
                   onClick={() => navigate(`/post/${post?.id}`)}
-                  className="text-lg cursor-pointer text-cyan-800 font-semibold"
+                  className="text-lg cursor-pointer text-cyan-800 font-semibold "
                 >
                   {post?.title}
                 </h2>
                 {/* user informatin */}
                 <Link to={`/user-profile/${post?.user?.id}`}>
-                  <div className="flex justify-between my-1">
+                  <div className="flex justify-between my-1 overflow-hidden">
                     <p className="text-gray-400">@{post.user.username}</p>
                     <p className="text-gray-400 ">{post?.user?.email}</p>
                   </div>
                 </Link>
                 {/* post content */}
                 <p className="text-gray-500">{trimDescription(post?.body)}</p>
-                <button className="center space-x-2 absolute bottom-2 right-2 p-1 hover:bg-main rounded cursor-pointer">
+                <button
+                  onClick={() => navigate(`/post/${post?.id}`)}
+                  className="center space-x-2 absolute bottom-2 right-2 p-1 hover:bg-main rounded cursor-pointer"
+                >
                   <p className="text-cyan-800">Read mode </p>
                   <BsArrowRight fill="#010014" />
                 </button>

@@ -1,5 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Input, Dropdown, Menu, Pagination, Form, Modal, Row, Col } from "antd";
+import {
+  Input,
+  Dropdown,
+  Menu,
+  Pagination,
+  Form,
+  Skeleton,
+  Row,
+  Col,
+} from "antd";
 import { useFetch } from "../../helpers/hooks.js";
 import { fetchPosts } from "../../helpers/backend_helper.js";
 import { BsArrowRight } from "react-icons/bs";
@@ -11,7 +20,7 @@ import FormInput from "../Form/FormInput.jsx";
 function SearchBox() {
   const navigate = useNavigate();
   const [form] = Form.useForm();
-  const [posts, getPosts] = useFetch(fetchPosts, {}, false); //dont fetch on mount
+  const [posts, getPosts, { loading }] = useFetch(fetchPosts, {}, false); //dont fetch on mount
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
@@ -41,6 +50,7 @@ function SearchBox() {
     ),
     key: "cross",
   });
+
 
   posts?.length < 1
     ? items.push({
@@ -79,7 +89,7 @@ function SearchBox() {
 
   items.push({
     label: (
-      <div className="flex justify-end">
+      <div className="flex justify-end dark:bg-support rounded p-1">
         <Pagination
           current={currentPage}
           pageSize={pageSize}
