@@ -5,31 +5,43 @@ import HeroSection from "../../components/home_page/HeroSection.jsx";
 import { Col, Row, Skeleton } from "antd";
 import { fetchPosts, fetchUsers } from "../../helpers/backend_helper.js";
 import TrendingPost from "../../components/home_page/TrendingPost.jsx";
-import {
-  Border,
-  HeroBorder,
-  UserProfileBorder,
-} from "../../components/common/Border.jsx";
 
 const Post = () => {
   const { id } = useParams();
-  const [data, getPost, { loading }] = useFetch(fetchPosts, {
-    id,
-    _embed: "comments",
-  });
   const [post, setPost] = useState({});
-  const [user, getUser, { loading1 }] = useFetch(fetchUsers, {}, false);
+  const [user, setUser] = useState({});
 
   const [isTablet, setTablet] = useState(window.innerWidth > 768);
   const updateMedia = () => {
     setTablet(window.innerWidth > 768);
   };
 
+  const [data, getPost, { loading }] = useFetch(fetchPosts, {
+    id,
+    _embed: "comments",
+  });
+  const [userData, getUser, { loading1 }] = useFetch(fetchUsers, {}, false);
+
+  useEffect(() => {
+    if (!!id) {
+      getPost({
+        id,
+        _embed: "comments",
+      });
+    }
+  }, [id]);
+
   useEffect(() => {
     if (!!data) {
       setPost(data[0]);
     }
   }, [data]);
+
+  useEffect(() => {
+    if (!!userData) {
+      setUser(userData[0]);
+    }
+  }, [userData]);
 
   useEffect(() => {
     if (!!post) {
@@ -42,11 +54,11 @@ const Post = () => {
     return () => window.removeEventListener("resize", updateMedia);
   });
 
-  if (loading || loading1) {
+  if (loading) {
     return (
       <Row className="mt-6">
         {[...Array(10).keys()]?.map((index) => (
-          <Col xs={12} md={12} xl={8} className={"p-3"} key={index}>
+          <Col span={13} className={"p-3"} key={index}>
             <Skeleton loading={loading} active></Skeleton>;
           </Col>
         ))}
@@ -64,22 +76,34 @@ const Post = () => {
               <h1 className="text-3xl font-bold mb-4">{post?.title}</h1>
               <div className="flex justify-between my-2">
                 <p
-                  onClick={() => navigate(`/user-profile/${user[0]?.id}`)}
+                  onClick={() => navigate(`/user-profile/${user?.id}`)}
                   className="text-gray-400"
                 >
-                  @{user[0]?.username}
+                  @{user?.username}
                 </p>
-                <p className="text-gray-400 ">{user[0]?.email}</p>
+                <p className="text-gray-400 ">{user?.email}</p>
               </div>
-              <p className="mb-8">{post?.body}</p>
+              <p className="mb-12">{post?.body}</p>
+
+              {/* comment  */}
+              <p className="text-lg my-4">
+                <span className="text-xl text-cyan-700 mr-2">
+                  {post?.comments?.length}
+                </span>
+                Comments
+              </p>
               {post?.comments?.map((comment) => (
                 <div
                   key={comment.id}
-                  className="bg-gray-100 p-4 rounded-lg mb-4"
+                  className=" shadow shadow-dark dark:shadow-support dark:bg-dark p-4 rounded-lg mb-4"
                 >
+                  <p className="mt-2 dark:text-gray-700 text-sm text-gray-300 font-medium">
+                    {comment.email}
+                  </p>
                   <h2 className="text-lg font-semibold">{comment.name}</h2>
-                  <p className="text-gray-700">{comment.body}</p>
-                  <p className="mt-2 text-sm font-medium">{comment.email}</p>
+                  <p className="dark:text-gray-200  text-gray-500">
+                    {comment.body}
+                  </p>
                 </div>
               ))}
             </div>
@@ -98,14 +122,26 @@ const Post = () => {
             <div className="max-w-xl mx-auto">
               <h1 className="text-3xl font-bold mb-4">{post?.title}</h1>
               <p className="mb-8">{post?.body}</p>
+
+              {/* comment  */}
+              <p className="text-lg my-4">
+                <span className="text-xl text-cyan-700 mr-2">
+                  {post?.comments?.length}
+                </span>
+                Comments
+              </p>
               {post?.comments?.map((comment) => (
                 <div
                   key={comment.id}
-                  className="bg-gray-100 p-4 rounded-lg mb-4"
+                  className=" shadow shadow-dark dark:shadow-support dark:bg-dark p-4 rounded-lg mb-4"
                 >
+                  <p className="mt-2 dark:text-gray-700 text-sm text-gray-300 font-medium">
+                    {comment.email}
+                  </p>
                   <h2 className="text-lg font-semibold">{comment.name}</h2>
-                  <p className="text-gray-700">{comment.body}</p>
-                  <p className="mt-2 text-sm font-medium">{comment.email}</p>
+                  <p className="dark:text-gray-200  text-gray-500">
+                    {comment.body}
+                  </p>
                 </div>
               ))}
             </div>
@@ -123,24 +159,22 @@ const Profile = ({ user }) => {
   return (
     <div className="mt-6 max-w-xl mx-auto p-8 rounded border-4 border-support text-cyan-800">
       <h1 className="text-4xl font-bold mb-4 text-center text-main">
-        {user[0]?.username}
+        {user ? user?.username : null}
       </h1>
       <div className="flex justify-center items-center mb-8">
         <div className="h-1 bg-main mr-2 flex-grow"></div>
-        <div className="text-gray-500 text-lg font-semibold">
-          {user[0]?.name}
-        </div>
+        <div className="text-gray-500 text-lg font-semibold">{user?.name}</div>
         <div className="h-1 bg-main ml-2 flex-grow"></div>
       </div>
 
       <div className="bg-white p-4 rounded-lg  flex-grow mt-8">
-        <h2 className="text-2xl font-bold mb-4 text-main">{user[0]?.email}</h2>
+        <h2 className="text-2xl font-bold mb-4 text-main">{user?.email}</h2>
         <p className="text-lg mb-2">
-          <span className="text-main font-bold">Phone:</span> {user[0]?.phone}
+          <span className="text-main font-bold">Phone:</span> {user?.phone}
         </p>
         <p className="text-lg">
-          <span className="text-main font-bold">Website:</span>{" "}
-          {user[0]?.website}
+          <span className="text-main font-bold">Website:</span>
+          {user?.website}
         </p>
       </div>
 
@@ -148,19 +182,19 @@ const Profile = ({ user }) => {
         <h2 className="text-2xl font-bold mb-4 text-main">Address</h2>
         <p className="text-lg mb-2">
           <span className="text-main font-bold">Street:</span>{" "}
-          {user[0]?.address.street}, {user[0]?.address.suite}
+          {user?.address?.street || ""}, {user?.address?.suite || ""}
         </p>
         <p className="text-lg mb-2">
           <span className="text-main font-bold">City:</span>{" "}
-          {user[0]?.address.city}
+          {user?.address?.city || ""}
         </p>
         <p className="text-lg">
           <span className="text-main font-bold">Zipcode:</span>{" "}
-          {user[0]?.address.zipcode}
+          {user?.address?.zipcode || ""}
         </p>
         <p className="text-lg mt-4">
           <span className="text-main font-bold">Geolocation:</span>{" "}
-          {user[0]?.address.geo.lat}, {user[0]?.address.geo.lng}
+          {user?.address?.geo?.lat || ""}, {user?.address?.geo?.lng || ""}
         </p>
       </div>
 
@@ -168,15 +202,15 @@ const Profile = ({ user }) => {
         <h2 className="text-2xl font-bold mb-4 text-main">Company</h2>
         <p className="text-lg mb-2">
           <span className="text-main font-bold">Name:</span>{" "}
-          {user[0]?.company.name}
+          {user?.company?.name || ""}
         </p>
         <p className="text-lg mb-2">
           <span className="text-main font-bold">Catchphrase:</span>{" "}
-          {user[0]?.company.catchPhrase}
+          {user?.company?.catchPhrase || ""}
         </p>
         <p className="text-lg">
           <span className="text-main font-bold">Business:</span>{" "}
-          {user[0]?.company.bs}
+          {user?.company?.bs || ""}
         </p>
       </div>
     </div>

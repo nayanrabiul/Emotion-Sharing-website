@@ -39,7 +39,7 @@ const Posts = ({ url }) => {
       <Row className="mt-6">
         {[...Array(10).keys()]?.map((index) => (
           <Col xs={12} md={12} xl={8} className={"p-3"} key={index}>
-            <Skeleton loading={loading} active></Skeleton>;
+            <Skeleton loading={loading} active></Skeleton>
           </Col>
         ))}
       </Row>

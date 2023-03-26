@@ -42,9 +42,9 @@ function SearchBox() {
           onClick={() => {
             setShowMenu(false);
           }}
-          className="px-3"
+          className="px-3 "
         >
-          <GiCrossedBones />
+          <GiCrossedBones className="dark:fill-support"/>
         </button>
       </div>
     ),
