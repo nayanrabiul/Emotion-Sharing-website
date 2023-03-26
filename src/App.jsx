@@ -27,8 +27,7 @@ const App = () => {
           <Col span={8}>
             <TrendingPost />
             <div className="p-4 mt-4 center hidden md:block">
-
-            <img src="/theme_pic.svg" alt="Theme Picture"></img>
+              <img src="/theme_pic.svg" alt="Theme Picture"></img>
             </div>
           </Col>
         </Row>

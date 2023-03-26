@@ -37,7 +37,6 @@ const FormInput = ({
           <Col
             className="bg-support border-2 border-black rounded relative flex"
             span={span}
-            offset={(24 - span) / 2}
           >
             <div className="p-5 rounded">
               <textarea
@@ -77,9 +76,6 @@ const FormInput = ({
   );
 };
 export default FormInput;
-
-
-
 
 export const FormInputEdit = ({
   name,

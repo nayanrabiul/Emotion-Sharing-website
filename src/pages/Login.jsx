@@ -62,12 +62,13 @@ const Login = () => {
               <div className={"w-full"}>
                 <Form
                   form={form}
-                  className="px-64"
+                  className="px-32"
                   layout="vertical"
                   onFinish={handleFinish}
                 >
                   <FormInput
                     span={24}
+                    justify="start"
                     placeholder="Enter User Id..."
                     name={"userID"}
                     required

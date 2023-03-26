@@ -150,7 +150,7 @@ const HeroSection = () => {
                       },
                     ]}
                   />
-                  
+
                   <Border>
                     <button className="border bg-main">Submit</button>
                   </Border>
