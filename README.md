@@ -1,7 +1,7 @@
 
 # Emotional Connection
 
-This is a blog frontend app built to emphasizes the importance of connection between peopl.
+This is a blog frontend app built to emphasize the importance of connection between people.
 
 ## Demo
 https://prefertochose.netlify.app
