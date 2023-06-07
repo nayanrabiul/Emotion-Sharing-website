@@ -1,6 +1,7 @@
 
-# Blog Frontend - Jukto Interview 2023
-This is a blog frontend app built for Jukto interview assignment.
+# Emotional Connection
+
+This is a blog frontend app built to emphasizes the importance of connection between peopl.
 
 ## Demo
 https://prefertochose.netlify.app
