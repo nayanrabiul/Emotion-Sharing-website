@@ -2,6 +2,19 @@
 # Blog Frontend - Jukto Interview 2023
 This is a blog frontend app built for Jukto interview assignment.
 
+## Demo
+https://prefertochose.netlify.app
+
+## Tech Stack
+React,React Router,Tailwind,Ant Design
+I have used https://jsonplaceholder.typicode.com/ for blog data.
+
+
+## Setup and Run
+Clone the repo
+Install dependencies: npm i
+Run the app: npm run dev
+
 ## Functionalities
 Login: user can log in with id. this is fake login just to ensure a user can only edit his post.
 
@@ -19,14 +32,7 @@ Commenting: Enables users to add comments to posts created by others.
 
 User Dashboard: Provides users with access to a personalized dashboard where they can manage their posts and show their profile.
 
-## Tech Stack
-React,React Router,Tailwind,Ant Design
-I have used https://jsonplaceholder.typicode.com/ for blog data.
 
-## Setup and Run
-Clone the repo
-Install dependencies: npm i
-Run the app: npm run dev
 
-## Demo
-https://blog-frontend-jukto-interview-2023.netlify.app/
+
+
